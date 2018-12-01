@@ -1,8 +1,7 @@
-class Vampir {
+class Vampir extends LivingCreature{
     constructor(x, y, index) {
-        this.x = x;
-        this.y = y;
-        this.index = index;
+        super(x, y, index)
+
         this.energy = 16;
     }
     getNewCoordinates() {
