@@ -34,9 +34,9 @@ class GrassEater extends LivingCreature {
         ];
     }
 
-    chooseCell(ch) {
+    chooseCell(num) {
         this.getNewCoordinates();
-        return super.chooseCell(ch);
+        return super.chooseCell(num);
     }
 
     move() {
