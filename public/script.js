@@ -41,12 +41,6 @@ var n = 80;
 
 
 
-var side = 10;
-
-function setup() {
-    frameRate(20);
-    createCanvas(n * side, m * side);
-    background('#acacac');
 
     /////////////lav ban
     // for (var y = 0; y < n; y++) {
@@ -62,14 +56,7 @@ function setup() {
     //   }
     // }
     
-    for (var y = 0; y < n; y++) {
-        matrix[y] = [];
-        for (var x = 0; x < m; x++) {
-            
-           matrix[y][x] = 0;//random([0, 1, 2, 3, 4, 5]);
 
-        }
-    }
     // for (var y = 0; y < matrix.length; y++) {
     //     for (var x = 0; x < matrix[0].length; x++) {
     //         if (matrix[y][x] == 1) {
@@ -91,58 +78,7 @@ function setup() {
     // }
     // console.log(matrix);
   
-    var a = 0;
-    while (a < kerpar1Qanak) {
-        var x = Math.floor(random(matrix[0].length));
-        var y = Math.floor(random(matrix.length));
 
-        if (matrix[y][x] == 0) {
-            matrix[y][x] = new Grass(x, y, 1);
-            a++;
-        }
-    }
-    var b = 0;
-    while (b < kerpar2Qanak) {
-        var x = Math.floor(random(matrix[0].length));
-        var y = Math.floor(random(matrix.length));
-
-        if (matrix[y][x] == 0) {
-            matrix[y][x] = new GrassEater(x, y, 2);
-            b++;
-        }
-    }
-    var c = 0;
-    while (c < kerpar3Qanak) {
-        var x = Math.floor(random(matrix[0].length));
-        var y = Math.floor(random(matrix.length));
-
-        if (matrix[y][x] == 0) {
-            matrix[y][x] = new Gishatich(x, y, 3);
-            c++;
-        }
-    }
-    var f = 0;
-    while (f < kerpar4Qanak) {
-        var x = Math.floor(random(matrix[0].length));
-        var y = Math.floor(random(matrix.length));
-
-        if (matrix[y][x] == 0) {
-            matrix[y][x] = new Mard(x, y, 4);
-            f++;
-        }
-    }
-    var q = 0;
-    while (q < kerpar5Qanak) {
-        var x = Math.floor(random(matrix[0].length));
-        var y = Math.floor(random(matrix.length));
-
-        if (matrix[y][x] == 0) {
-            matrix[y][x] = new Vampir(x, y, 5);
-            q++;
-        }
-    }
-    
-}
 
 function draw() {
 
