@@ -1,64 +1,57 @@
 var express = require('express');
-var path = require('path');
 var app = express();
 
-// Define the port to run on
-app.set('port', process.env.PORT || 3000);
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static("./public"));
 
-// Listen for requests
-var server = app.listen(app.get('port'), function() {
-  var port = server.address().port;
-  console.log('Magic happens on port ' + port);
+app.get('/', function (req, res) {
+   res.redirect('index.html');
 });
 
 server.listen(3000);
 
-var grass = require("./grass");
-var eatgrass = require("./eatgrass");
-var gishatich = require("./gishatich");
-var mard = require("./mard");
-var vampir = require("./vampir");
+var grass = require("./Modules/class.grass");
+var eatgrass = require("./Modules/class.eatgrass");
+var gishatich = require("./Modules/class.gishatich");
+var mard = require("./Modules/class.mard");
+var vampir = require("./Modules/class.vampir");
 
+var matrix = require("./Modules/matrix");
+console.log(matrix); // ktesnes ardyunqy terminalum
+
+io.on('connection', function (socket) {
+    socket.emit("first matrix", matrix);
+ });
  
-var time = frameRate(5);
+var time = frameRate(2);
+
 function frameRate(frameCount)
 {
     return 1000 / frameCount;
 }
+
 function draw(){
-    for(var i in grass)
-    {
-        grass[i].mul();
-
+    for (var y = 0; y < matrix.length; y++) {
+        for (var x = 0; x < matrix[0].length; x++) {
+            if (matrix[y][x].index == 1) {
+                matrix[y][x].mul(matrix);
+            }
+            /*else if (matrix[y][x].index == 2) {
+                matrix[y][x].eat();
+            }
+            else if (matrix[y][x].index == 3) {
+                matrix[y][x].eat();
+            }
+            else if (matrix[y][x].index == 4) {
+                matrix[y][x].eat();
+            }
+            else if (matrix[y][x].index == 5) {
+                matrix[y][x].eat();
+            }*/
+        }
     }
-    socket.emit("update matrix", matrix.js);
-    for(var i in eatgrass)
-    {
-        grass[i].mul();
-
-    }
-    socket.emit("update matrix", matrix.js);
-    for(var i in gishatich)
-    {
-        grass[i].mul();
-
-    }
-    socket.emit("update matrix", matrix.js);
-    for(var i in mard)
-    {
-        grass[i].mul();
-
-    }
-    socket.emit("update matrix", matrix.js);
-    for(var i in vampir)
-    {
-        grass[i].mul();
-
-    }
-    socket.emit("update matrix", matrix.js);
 }
+
 setInterval(draw, time);
-
-
