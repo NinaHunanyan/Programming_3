@@ -63,9 +63,9 @@ module.exports = class Vampir extends LivingCreature{
         this.getNewCoordinates();
         return super.chooseCell(num);
     }
-    move() {
+    move(matrix) {
         if (this.acted == false) {
-            var newCell = random(this.chooseCell(0));
+            var newCell = random_items(this.chooseCell(0, matrix));
 
             if (newCell) {
                 var newX = newCell[0];
@@ -84,9 +84,9 @@ module.exports = class Vampir extends LivingCreature{
         }
 
     }
-    eat() {
+    eat(matrix) {
         if (this.acted == false) {
-            var newCell = random(this.chooseCell(4));
+            var newCell = random_items(this.chooseCell(4, matrix));
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
@@ -94,7 +94,7 @@ module.exports = class Vampir extends LivingCreature{
                 matrix[newY][newX] = new Vampir(newX, newY, 5);
             }
             else {
-                newCell = random(this.chooseCell(random([3, 2])));
+                newCell = random_items(this.chooseCell(random([3, 2])));
                 if (newCell) {
                     var newX = newCell[0];
                     var newY = newCell[1];
@@ -117,9 +117,9 @@ module.exports = class Vampir extends LivingCreature{
             }
         }
     }
-    mul() {
+    mul(matrix) {
 
-        var newCell = random(this.chooseCell(0));
+        var newCell = random_items(this.chooseCell(0, matrix));
 
         if (newCell) {
             var newX = newCell[0];
@@ -130,9 +130,12 @@ module.exports = class Vampir extends LivingCreature{
         }
 
     }
-    die() {
+    die(matrix) {
 
         matrix[this.y][this.x] = 0;
 
     }
+}
+function random_items(items) {
+    return items[Math.floor(Math.random() * items.length)];
 }

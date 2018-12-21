@@ -39,9 +39,9 @@ module.exports = class Mard extends LivingCreature{
         this.getNewCoordinates();
         return super.chooseCell(num);
     }
-    move() {
+    move(matrix) {
         if (this.acted == false) {
-            var newCell = random(this.chooseCell(0));
+            var newCell = random_items(this.chooseCell(0, matrix));
 
             if (newCell) {
                 var newX = newCell[0];
@@ -60,9 +60,9 @@ module.exports = class Mard extends LivingCreature{
         }
 
     }
-    eat() {
+    eat(matrix) {
         if (this.acted == false) {
-            var newCell = random(this.chooseCell(random([2, 3])));
+            var newCell = random_items(this.chooseCell(random([2, 3]), matrix));
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
@@ -84,9 +84,9 @@ module.exports = class Mard extends LivingCreature{
             }
         }
     }
-    mul() {
+    mul(matrix) {
 
-        var newCell = random(this.chooseCell(0));
+        var newCell = random_items(this.chooseCell(0, matrix));
 
         if (newCell) {
             var newX = newCell[0];
@@ -97,9 +97,12 @@ module.exports = class Mard extends LivingCreature{
         }
 
     }
-    die() {
+    die(matrix) {
 
         matrix[this.y][this.x] = 0;
 
     }
+}
+function random_items(items) {
+    return items[Math.floor(Math.random() * items.length)];
 }

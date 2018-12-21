@@ -38,7 +38,7 @@ function draw(){
             if (matrix[y][x].index == 1) {
                 matrix[y][x].mul(matrix);
             }
-            /*else if (matrix[y][x].index == 2) {
+            else if (matrix[y][x].index == 2) {
                 matrix[y][x].eat();
             }
             else if (matrix[y][x].index == 3) {
@@ -49,7 +49,7 @@ function draw(){
             }
             else if (matrix[y][x].index == 5) {
                 matrix[y][x].eat();
-            }*/
+            }
         }
     }
 }
