@@ -35,9 +35,9 @@ module.exports = class Mard extends LivingCreature{
         ];
     }
 
-    chooseCell(num) {
+    chooseCell(num, matrix) {
         this.getNewCoordinates();
-        return super.chooseCell(num);
+        return super.chooseCell(num, matrix);
     }
     move(matrix) {
         if (this.acted == false) {
@@ -54,35 +54,41 @@ module.exports = class Mard extends LivingCreature{
             }
             this.energy -= 2;
             if (this.energy <= 0) {
-                this.die();
+                this.die(matrix);
             }
             this.acted = true;
         }
-
+        else this.acted = false;
     }
     eat(matrix) {
         if (this.acted == false) {
-            var newCell = random_items(this.chooseCell(random([2, 3]), matrix));
+            var newCell = random_items(this.chooseCell(random_items([2, 3]), matrix));
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
-
+                if(matrix[newY][newX] == 2){
+                    matrix[newY][newX].dieCounter();
+                }
+                else if(matrix[newY][newX] == 3){
+                    Gishatich.current--;
+                }
                 matrix[newY][newX] = matrix[this.y][this.x];
                 matrix[this.y][this.x] = 0;
                 this.x = newX;
                 this.y = newY;
                 this.energy += 3;
                 if (this.energy >= 80) {
-                    this.mul();
+                    this.mul(matrix);
                     this.energy = 50;
                 }
 
                 this.acted = true;
             }
             else {
-                this.move();
+                this.move(matrix);
             }
         }
+        else this.acted = false;
     }
     mul(matrix) {
 
@@ -93,14 +99,20 @@ module.exports = class Mard extends LivingCreature{
             var newY = newCell[1];
 
             matrix[newY][newX] = new Mard(newX, newY, 4);
+            Mard.born++;
+            Mard.current++;
 
         }
+        else this.acted = false;
 
     }
     die(matrix) {
-
         matrix[this.y][this.x] = 0;
-
+        this.dieCounter();
+    }
+    dieCounter(){
+        Mard.dead++;
+        Mard.current--;
     }
 }
 function random_items(items) {

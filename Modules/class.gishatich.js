@@ -34,13 +34,13 @@ module.exports = class Gishatich extends LivingCreature{
             [this.x - 2, this.y - 1]
         ];
     }
-    chooseCell(num) {
+    chooseCell(num, matrix) {
         this.getNewCoordinates();
-        return super.chooseCell(num);
+        return super.chooseCell(num, matrix);
     }
-    move() {
+    move(matrix) {
         if (this.acted == false) {
-            var newCell = random_items(this.chooseCell(0));
+            var newCell = random_items(this.chooseCell(0, matrix));
 
             if (newCell) {
                 var newX = newCell[0];
@@ -53,10 +53,11 @@ module.exports = class Gishatich extends LivingCreature{
             }
             this.energy -= 2;
             if (this.energy <= 0) {
-                this.die();
+                this.die(matrix);
             }
             this.acted = true;
         }
+        else this.acted = false;
 
     }
     eat(matrix) {
@@ -66,22 +67,24 @@ module.exports = class Gishatich extends LivingCreature{
                 var newX = newCell[0];
                 var newY = newCell[1];
 
+               
                 matrix[newY][newX] = matrix[this.y][this.x];
                 matrix[this.y][this.x] = 0;
                 this.x = newX;
                 this.y = newY;
                 this.energy += 2;
                 if (this.energy >= 40) {
-                    this.mul();
+                    this.mul(matrix);
                     this.energy = 25;
+                    matrix[newY][newX].dieCounter();
                 }
 
                 this.acted = true;
             }
             else {
-                this.move();
+                this.move(matrix);
             }
-        }
+        }else this.acted = false;
     }
     mul(matrix) {
 
@@ -93,13 +96,19 @@ module.exports = class Gishatich extends LivingCreature{
 
             matrix[newY][newX] = new Gishatich(newX, newY, 3);
 
+            Gishatich.born++;
+            Gishatich.current++;
         }
+        else this.acted = false;
 
     }
     die(matrix) {
-
         matrix[this.y][this.x] = 0;
-
+        this.dieCounter();
+    }
+    dieCounter(){
+        Gishatich.dead++;
+        Gishatich.current--;
     }
 }
 function random_items(items) {

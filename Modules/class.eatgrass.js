@@ -36,9 +36,9 @@ module.exports = class GrassEater extends LivingCreature {
         ];
     }
 
-    chooseCell(num) {
+    chooseCell(num, matrix) {
         this.getNewCoordinates();
-        return super.chooseCell(num);
+        return super.chooseCell(num, matrix);
     }
 
     move(matrix) {
@@ -56,11 +56,11 @@ module.exports = class GrassEater extends LivingCreature {
             }
             this.energy--;
             if (this.energy <= 0) {
-                this.die();
+                this.die(matrix);
             }
             this.acted = true;
         }
-
+    else this.acted = false;
 
     }
     eat(matrix) {
@@ -76,17 +76,20 @@ module.exports = class GrassEater extends LivingCreature {
                 this.y = newY;
                 this.energy++;
                 if (this.energy >= 12) {
-                    this.mul();
+                    this.mul(matrix);
                     this.energy = 6;
+                    matrix[newY][newX].dieCounter();
                 }
 
                 this.acted = true;
             }
             else {
-                this.move();
+                this.move(matrix);
             }
         }
+        else this.acted = false;
     }
+    
     mul(matrix) {
 
         var newCell = random_items(this.chooseCell(0, matrix));
@@ -96,15 +99,24 @@ module.exports = class GrassEater extends LivingCreature {
             var newY = newCell[1];
 
             matrix[newY][newX] = new GrassEater(newX, newY, 2);
+
+            GrassEater.born++;
+            GrassEater.current++;
         }
+        else this.acted = false;
 
     }
     die(matrix) {
         matrix[this.y][this.x] = 0;
+        this.dieCounter();
+    }
+    dieCounter(){
+        GrassEater.dead++;
+        GrassEater.current--;
     }
 
-
 }
+
 function random_items(items) {
     return items[Math.floor(Math.random() * items.length)];
 }
