@@ -3,7 +3,6 @@ var LivingCreature = require("./livingcreature");
 module.exports = class GrassEater extends LivingCreature {
     constructor(x, y, index) {
         super(x,y,index)
-        
         this.energy = 8;
         this.acted = false;
     }
@@ -63,24 +62,22 @@ module.exports = class GrassEater extends LivingCreature {
     else this.acted = false;
 
     }
-    eat(matrix) {
+    eat(matrix, spl) {
         if (this.acted == false) {
             var newCell = random_items(this.chooseCell(1, matrix));
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
-
+                matrix[newY][newX].die();
                 matrix[newY][newX] = matrix[this.y][this.x];
                 matrix[this.y][this.x] = 0;
                 this.x = newX;
                 this.y = newY;
                 this.energy++;
-                if (this.energy >= 12) {
+                if (this.energy >= spl) {
                     this.mul(matrix);
                     this.energy = 6;
-                    matrix[newY][newX].dieCounter();
                 }
-
                 this.acted = true;
             }
             else {
@@ -103,17 +100,14 @@ module.exports = class GrassEater extends LivingCreature {
             GrassEater.born++;
             GrassEater.current++;
         }
-        else this.acted = false;
 
     }
     die(matrix) {
         matrix[this.y][this.x] = 0;
-        this.dieCounter();
-    }
-    dieCounter(){
         GrassEater.dead++;
         GrassEater.current--;
     }
+
 
 }
 

@@ -65,6 +65,8 @@ while (a < kerpar1Qanak) {
 
     if (matrix[y][x] == 0) {
         matrix[y][x] = new Grass(x, y, 1);
+        Grass.born++;
+        Grass.current++;
         a++;
     }
 }
@@ -77,6 +79,8 @@ while (b < kerpar2Qanak) {
 
     if (matrix[y][x] == 0) {
         matrix[y][x] = new GrassEater(x, y, 2);
+        GrassEater.born++;
+        GrassEater.current++;
         b++;
     }
 }
@@ -89,6 +93,8 @@ while (c < kerpar3Qanak) {
 
     if (matrix[y][x] == 0) {
         matrix[y][x] = new Gishatich(x, y, 3);
+        Gishatich.born++;
+        Gishatich.current++;
         c++;
     }
 }
@@ -101,6 +107,8 @@ while (f < kerpar4Qanak) {
 
     if (matrix[y][x] == 0) {
         matrix[y][x] = new Mard(x, y, 4);
+        Mard.born++;
+        Mard.current++;
         f++;
     }
 }
@@ -113,6 +121,8 @@ while (q < kerpar5Qanak) {
 
     if (matrix[y][x] == 0) {
         matrix[y][x] = new Vampir(x, y, 5);
+        Vampir.born++;
+        Vampir.current++;
         q++;
     }
 }

@@ -3,7 +3,7 @@ var LivingCreature = require("./livingcreature");
 module.exports = class Gishatich extends LivingCreature{
     constructor(x, y, index) {
         super(x, y, index)
-
+        
         this.energy = 25;
     }
     getNewCoordinates() {
@@ -60,23 +60,21 @@ module.exports = class Gishatich extends LivingCreature{
         else this.acted = false;
 
     }
-    eat(matrix) {
+    eat(matrix, spl) {
         if (this.acted == false) {
             var newCell = random_items(this.chooseCell(2, matrix));
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
-
-               
+                matrix[newY][newX].die(matrix);
                 matrix[newY][newX] = matrix[this.y][this.x];
                 matrix[this.y][this.x] = 0;
                 this.x = newX;
                 this.y = newY;
                 this.energy += 2;
-                if (this.energy >= 40) {
+                if (this.energy >= spl) {
                     this.mul(matrix);
                     this.energy = 25;
-                    matrix[newY][newX].dieCounter();
                 }
 
                 this.acted = true;
@@ -104,9 +102,6 @@ module.exports = class Gishatich extends LivingCreature{
     }
     die(matrix) {
         matrix[this.y][this.x] = 0;
-        this.dieCounter();
-    }
-    dieCounter(){
         Gishatich.dead++;
         Gishatich.current--;
     }

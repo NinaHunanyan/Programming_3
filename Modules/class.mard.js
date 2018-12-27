@@ -60,24 +60,24 @@ module.exports = class Mard extends LivingCreature{
         }
         else this.acted = false;
     }
-    eat(matrix) {
+    eat(matrix, spl) {
         if (this.acted == false) {
             var newCell = random_items(this.chooseCell(random_items([2, 3]), matrix));
             if (newCell) {
                 var newX = newCell[0];
                 var newY = newCell[1];
-                if(matrix[newY][newX] == 2){
-                    matrix[newY][newX].dieCounter();
+                if(matrix[newY][newX].index == 2){
+                    matrix[newY][newX].die(matrix);
                 }
-                else if(matrix[newY][newX] == 3){
-                    Gishatich.current--;
+                else if(matrix[newY][newX].index == 3){
+                    matrix[newY][newX].die(matrix);
                 }
                 matrix[newY][newX] = matrix[this.y][this.x];
                 matrix[this.y][this.x] = 0;
                 this.x = newX;
                 this.y = newY;
                 this.energy += 3;
-                if (this.energy >= 80) {
+                if (this.energy >= spl) {
                     this.mul(matrix);
                     this.energy = 50;
                 }
@@ -108,12 +108,10 @@ module.exports = class Mard extends LivingCreature{
     }
     die(matrix) {
         matrix[this.y][this.x] = 0;
-        this.dieCounter();
-    }
-    dieCounter(){
         Mard.dead++;
         Mard.current--;
     }
+    
 }
 function random_items(items) {
     return items[Math.floor(Math.random() * items.length)];

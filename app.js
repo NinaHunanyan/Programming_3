@@ -33,9 +33,10 @@ Mard.current = 0;
 Vampir.born = 0;
 Vampir.dead = 0;
 Vampir.current = 0;
+tact = 0;
 
 var matrix = require("./Modules/matrix");
-console.log(matrix);
+
 
 io.on('connection', function (socket) {
     socket.emit("first matrix", matrix);
@@ -44,32 +45,60 @@ io.on('connection', function (socket) {
         for (var y = 0; y < matrix.length; y++) {
             for (var x = 0; x < matrix[0].length; x++) {
                 if (matrix[y][x].index == 1) {
-                    matrix[y][x].mul(matrix);
+                    if(tact <= 20)
+                        matrix[y][x].mul(matrix);
                 }
                 else if (matrix[y][x].index == 2) {
-                    matrix[y][x].eat(matrix);
+                    if(tact <= 20){
+                        matrix[y][x].eat(matrix, 10);
+                    }
+                    else if(tact > 20 && tact <= 40) {
+                        matrix[y][x].eat(matrix, 16);
+                    }
                 }
                 else if (matrix[y][x].index == 3) {
-                    matrix[y][x].eat(matrix);
+                    if(tact <= 20) {
+                        matrix[y][x].eat(matrix, 40);
+                    }
+                    else if (tact > 20 && tact <= 40) {
+                        matrix[y][x].eat(matrix, 10);
+                    }
                 }
                 else if (matrix[y][x].index == 4) {
-                    matrix[y][x].eat(matrix);
+                    if(tact <= 20){
+                        matrix[y][x].eat(matrix, 50);
+                    }
+                    else if(tact > 20 && tact <= 40) {
+                        matrix[y][x].eat(matrix, 80);
+                    }
                 }
                 else if (matrix[y][x].index == 5) {
-                    matrix[y][x].eat(matrix);
+                    if(tact <= 20) {
+                        matrix[y][x].eat(matrix, 2);
+                    }
+                    else if(tact <= 40 && tact > 20) {
+                        matrix[y][x].eat(matrix, 0);
+                    }
                 }
             }
         }
-        
+        tact++;
+        if(tact == 41){
+            tact = 0
+        }
+        //console.log(tact);
         socket.emit("redraw", matrix);
+        socket.emit("tact", tact);
     }, time);
+
+
 
     setInterval(function(){
         ctt = {
             "Grass": {
                 "born": Grass.born,
                 "dead": Grass.dead,
-                "current": Grass.corrent
+                "current": Grass.current
             },
             "GrassEater": {
                 "born": GrassEater.born,
@@ -84,12 +113,12 @@ io.on('connection', function (socket) {
             "Mard": {
                 "born": Mard.born,
                 "dead": Mard.dead,
-                "current" : Mard.corrent
+                "current" : Mard.current
             },
             "Vampir" : {
                 "born": Vampir.born,
                 "dead": Vampir.dead,
-                "current" : Vampir.corrent
+                "current" : Vampir.current
             }
         };
         

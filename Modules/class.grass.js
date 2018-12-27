@@ -13,7 +13,12 @@ module.exports = class Grass extends LivingCreature {
             matrix[newY][newX] = new Grass(newX, newY, 1);
             this.multiply = 0;
             Grass.born++;
+            Grass.current++;
         }
+    }
+    die(){
+        Grass.dead++;
+        Grass.current--;
     }
 }
 
